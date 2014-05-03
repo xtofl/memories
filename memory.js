@@ -21,13 +21,17 @@ var memory = function(){
 			turn: function(tile){
 				console.log("wait_turn_second: turn -> ...");
 				if (tile.matches(current_up)) {
-					console.log("match");
+					console.log("match ...");
 					current_up.freeze();
 					tile.freeze();
 					if (allDone()){
+						console.log("... won");
 						finishGame();
-					};
-					state = states.wait_turn_first;
+						state = states.won;
+					} else {
+						console.log("... wait_turn_first");
+						state = states.wait_turn_first;
+					}
 				} else {
 					console.log("no match");
 					scheduleTurnBack([current_up, tile]);
@@ -38,6 +42,7 @@ var memory = function(){
 		},
 		wait_turned_back: {
 			turned_back: function(){
+				console.log("wait_turned_back: turned_back -> wait_turn_first");
 				state = states.wait_turn_first;
 			},
 			canTurn: function() { return false; }
