@@ -20,8 +20,11 @@ var memory = function(){
 				state = states.wait_turn_first;
 				if (tile.matches(current_up)) {
 					console.log("match");
-					current_up.done();
-					tile.done();
+					current_up.freeze();
+					tile.freeze();
+					if (allDone()){
+						finishGame();
+					};
 				} else {
 					console.log("no match");
 					scheduleTurnBack([current_up, tile]);
@@ -38,6 +41,18 @@ var memory = function(){
 				tiles[i].turn();
 			};
 		}, 2000);
+	};
+	var finishGame = function(){
+		alert("You Won!");
+	};
+	var allTiles = [];
+	var allDone = function(){
+		for (var i=0; i != allTiles.length; ++i){
+			if (allTiles[i].notDone()) {
+				return false;
+			}
+		}
+		return true;
 	};
 	var state = states.begin;
 
@@ -63,6 +78,7 @@ var memory = function(){
 
 	var createTile = function(i){
 		var tile = document.createElement("div");
+		var done = false;
 		var img = createImage(i);
 		tile.appendChild(img);
 		tile.img = img;
@@ -81,10 +97,12 @@ var memory = function(){
 			tile.setAttribute("class", "face-down");
 			tile.turn = tile.up;
 		};
-		tile.done = function(){
+		tile.freeze = function(){
 			$(tile).unbind("click", turnTile);
 			tile.turn = function(){};
+			done = true;
 		};
+		tile.notDone = function(){return !done;}
 		tile.turn = tile.up;
 		
 		var turnTile = function(){
@@ -109,6 +127,7 @@ var memory = function(){
 				for (var i=0; i != tiles.length; ++i){
 					element.append(tiles[i]);
 				}
+				allTiles = tiles;
 		},
 		start: function(){ 
 			state.started();
