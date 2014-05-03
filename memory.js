@@ -22,10 +22,20 @@ var memory = function(){
 					console.log("match");
 				} else {
 					console.log("no match");
+					scheduleTurnBack([current_up, tile]);
 				}
 			}
 		},
 		won: ""
+	};
+	var scheduleTurnBack = function(tiles){
+		console.log("scheduling turn back tiles");
+		setTimeout(function(){
+		        console.log("turning back tiles");
+			for (var i=0; i != tiles.length; ++i){
+				tiles[i].turn();
+			};
+		}, 2000);
 	};
 	var state = states.begin;
 
@@ -59,18 +69,19 @@ var memory = function(){
 		tile.matches = function(other){
 			return tile.img.matches(other.img);
 		};
-		var up = function(){
+		tile.up = function(){
 			tile.setAttribute("class", "face-up");
 			state.turn(tile);
-			next = down;
+			tile.turn = tile.down;
 		};
-		var down = function(){
+		tile.down = function(){
 			tile.setAttribute("class", "face-down");
-			next = up;
+			tile.turn = tile.up;
 		};
-		var next = up;
+		tile.turn = tile.up;
+		
 		$(tile).click(function(){
-			next();
+			tile.turn();
 		});
 		return tile;
 	};
