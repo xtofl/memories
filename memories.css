@@ -1,0 +1,15 @@
+#grid img {
+	width: 100px;
+}
+#grid face-down front {
+	display: none
+}
+#grid face-up front {
+	display: inline
+}
+#grid face-down back {
+	display: inline
+}
+#grid face-up back {
+	display: none
+}
