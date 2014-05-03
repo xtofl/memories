@@ -113,7 +113,7 @@ var memory = function(){
 	};
 
 	var shuffled = function(elements) {
-		return elements;
+		return elements.slice().sort(function(){return 0.5 - Math.random();});
 	};
 
 	var memory = {
