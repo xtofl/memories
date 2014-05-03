@@ -12,7 +12,8 @@ $(function(){
 		start.text("Restart");
 		grid.empty();
 		var images = [];
-		for (var i=0; i != 3; ++i) {
+		var numberOfImages = parseInt($("#number").val(), 10);
+		for (var i=0; i != numberOfImages; ++i) {
 			images.push("images/butterfly-0"+(i+1)+".jpg");
 		};
 		var game = memory({
@@ -23,13 +24,13 @@ $(function(){
 		});
 		game.build(grid);
 		game.start();
-		game.whenFinished;
 	});
 });
 </script>
 </head>
 <body>
 <h1>Memory</h1>
+Number of images: <input id="number" type="number" value="3"></input>
 <button id="start">Start</button>
 <div id="grid"></div>
 
