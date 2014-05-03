@@ -1,5 +1,5 @@
 //require jquery
-var memory = function(){
+var memory = function(settings){
 	var current_up = null;
 	var states = {
 		begin: { 
@@ -76,7 +76,7 @@ var memory = function(){
 	var createImage = function(i){
 		var img = document.createElement("img");
 		// note: images coming from http://eofdreams.com/butterfly.html
-		var src = "images/butterfly-0"+(i+1)+".jpg";
+		var src = i; 
 		img.setAttribute("src", src);
 		img.setAttribute("class", "front");
 		img.matches = function(other){
@@ -141,9 +141,9 @@ var memory = function(){
 	var memory = {
 		build: function(element){
 				var tiles = [];
-				for (var i=0; i != 2; ++i) {
-					tiles.push(createTile(i));
-					tiles.push(createTile(i));
+				for (var i=0; i != settings.images.length; ++i) {
+					tiles.push(createTile(settings.images[i]));
+					tiles.push(createTile(settings.images[i]));
 				}
 				tiles = shuffled(tiles);
 				for (var i=0; i != tiles.length; ++i){

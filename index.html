@@ -11,7 +11,11 @@ $(function(){
 	start.click(function(){
 		start.text("Restart");
 		grid.empty();
-		var game = memory();
+		var images = [];
+		for (var i=0; i != 3; ++i) {
+			images.push("images/butterfly-0"+(i+1)+".jpg");
+		};
+		var game = memory({images: images});
 		game.build(grid);
 		game.start();
 		game.whenFinished(function(){
