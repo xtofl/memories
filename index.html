@@ -15,12 +15,15 @@ $(function(){
 		for (var i=0; i != 3; ++i) {
 			images.push("images/butterfly-0"+(i+1)+".jpg");
 		};
-		var game = memory({images: images});
+		var game = memory({
+			images: images, 
+			whenFinished: function(){
+				start.text("Start");
+			}
+		});
 		game.build(grid);
 		game.start();
-		game.whenFinished(function(){
-			start.text("Start");
-		});
+		game.whenFinished;
 	});
 });
 </script>

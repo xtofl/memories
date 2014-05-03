@@ -60,7 +60,7 @@ var memory = function(settings){
 		}, 2000);
 	};
 	var finishGame = function(){
-		onGameFinish();
+		settings.whenFinished();
 	};
 	var allTiles = [];
 	var allDone = function(){
@@ -154,9 +154,6 @@ var memory = function(settings){
 		start: function(){ 
 			state.started();
 		},
-		whenFinished: function(finished){
-			onGameFinish = finished;
-		}
 	};
 	return memory;
 };
