@@ -1,5 +1,11 @@
+#grid {
+	width: 400px;
+}
 #grid img {
 	width: 100px;
+}
+#grid div {
+	display: inline
 }
 #grid .face-down .front {
 	display: none
