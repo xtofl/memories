@@ -20,6 +20,8 @@ var memory = function(){
 				state = states.wait_turn_first;
 				if (tile.matches(current_up)) {
 					console.log("match");
+					current_up.done();
+					tile.done();
 				} else {
 					console.log("no match");
 					scheduleTurnBack([current_up, tile]);
@@ -41,6 +43,7 @@ var memory = function(){
 
 	var createImage = function(i){
 		var img = document.createElement("img");
+		// note: images coming from http://eofdreams.com/butterfly.html
 		var src = "images/butterfly-0"+(i+1)+".jpg";
 		img.setAttribute("src", src);
 		img.setAttribute("class", "front");
@@ -78,11 +81,16 @@ var memory = function(){
 			tile.setAttribute("class", "face-down");
 			tile.turn = tile.up;
 		};
+		tile.done = function(){
+			$(tile).unbind("click", turnTile);
+			tile.turn = function(){};
+		};
 		tile.turn = tile.up;
 		
-		$(tile).click(function(){
+		var turnTile = function(){
 			tile.turn();
-		});
+		};
+		$(tile).bind("click", turnTile);
 		return tile;
 	};
 
@@ -93,7 +101,7 @@ var memory = function(){
 	var memory = {
 		build: function(element){
 				var tiles = [];
-				for (var i=0; i != 9; ++i) {
+				for (var i=0; i != 5; ++i) {
 					tiles.push(createTile(i));
 					tiles.push(createTile(i));
 				}
