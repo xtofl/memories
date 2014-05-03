@@ -6,14 +6,22 @@
 <link rel="stylesheet" type="text/css" href="memories.css">
 <script>
 $(function(){
-	memory.build($("#grid"));
-	memory.start();	
+	$("#start").click(function(){
+		$("#start").text("Restart");
+		$("#grid").empty();
+		var game = memory();
+		game.build($("#grid"));
+		game.start();
+		game.whenFinished(function(){
+			$("#start").text("Start");
+		});
+	});
 });
 </script>
 </head>
 <body>
 <h1>Memory</h1>
-
+<button id="start">Start</button>
 <div id="grid"></div>
 
 

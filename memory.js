@@ -43,7 +43,7 @@ var memory = function(){
 		}, 2000);
 	};
 	var finishGame = function(){
-		alert("You Won!");
+		onGameFinish();
 	};
 	var allTiles = [];
 	var allDone = function(){
@@ -116,10 +116,13 @@ var memory = function(){
 		return elements.slice().sort(function(){return 0.5 - Math.random();});
 	};
 
+	var onGameFinish = function(){
+	};
+
 	var memory = {
 		build: function(element){
 				var tiles = [];
-				for (var i=0; i != 5; ++i) {
+				for (var i=0; i != 2; ++i) {
 					tiles.push(createTile(i));
 					tiles.push(createTile(i));
 				}
@@ -131,7 +134,10 @@ var memory = function(){
 		},
 		start: function(){ 
 			state.started();
+		},
+		whenFinished: function(finished){
+			onGameFinish = finished;
 		}
 	};
 	return memory;
-}();
+};
