@@ -40,8 +40,17 @@ var memory = function(){
 		var back = createBack(i);
 		tile.appendChild(back);
 		tile.setAttribute("class", "face-down");
-		$(tile).click(function(){
+		var up = function(){
 			tile.setAttribute("class", "face-up");
+			next = down;
+		};
+		var down = function(){
+			tile.setAttribute("class", "face-down");
+			next = up;
+		};
+		var next = up;
+		$(tile).click(function(){
+			next();
 		});
 		return tile;
 	};
