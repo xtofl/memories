@@ -31,8 +31,13 @@ var memory = function(){
 
 	var createImage = function(i){
 		var img = document.createElement("img");
-		img.setAttribute("src", "images/butterfly-0"+(i+1)+".jpg");
+		var src = "images/butterfly-0"+(i+1)+".jpg";
+		img.setAttribute("src", src);
 		img.setAttribute("class", "front");
+		img.matches = function(other){
+			var other_src = other.getAttribute("src");
+			return src == other_src;
+		};
 		return img;
 	};
 
@@ -52,7 +57,7 @@ var memory = function(){
 		tile.appendChild(back);
 		tile.setAttribute("class", "face-down");
 		tile.matches = function(other){
-			return tile.img === other.img;
+			return tile.img.matches(other.img);
 		};
 		var up = function(){
 			tile.setAttribute("class", "face-up");
@@ -70,12 +75,21 @@ var memory = function(){
 		return tile;
 	};
 
+	var shuffled = function(elements) {
+		return elements;
+	};
+
 	var memory = {
 		build: function(element){
-			       for (var i=0; i != 9; ++i) {
-				       var tile = createTile(i);
-				       element.append(tile);
-			       }
+				var tiles = [];
+				for (var i=0; i != 9; ++i) {
+					tiles.push(createTile(i));
+					tiles.push(createTile(i));
+				}
+				tiles = shuffled(tiles);
+				for (var i=0; i != tiles.length; ++i){
+					element.append(tiles[i]);
+				}
 		},
 		start: function(){ 
 			state.started();
