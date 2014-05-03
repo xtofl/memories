@@ -6,14 +6,16 @@
 <link rel="stylesheet" type="text/css" href="memories.css">
 <script>
 $(function(){
-	$("#start").click(function(){
-		$("#start").text("Restart");
-		$("#grid").empty();
+	var start = $("#start");
+	var grid = $("#grid");
+	start.click(function(){
+		start.text("Restart");
+		grid.empty();
 		var game = memory();
-		game.build($("#grid"));
+		game.build(grid);
 		game.start();
 		game.whenFinished(function(){
-			$("#start").text("Start");
+			start.text("Start");
 		});
 	});
 });
