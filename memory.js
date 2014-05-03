@@ -6,18 +6,20 @@ var memory = function(){
 			started: function(){
 				console.log("begin: started -> wait_turn_first");
 				state = states.wait_turn_first;
-			} },
+			},
+			canTurn: function() { return true; }
+		},
 		wait_turn_first: {
 			turn: function(tile){
 				console.log("wait_turn_first: turn -> wait_turn_second");
 				state = states.wait_turn_second;
 				current_up = tile;
-			}
+			},
+			canTurn: function() { return true; }
 		},
 		wait_turn_second: {
 			turn: function(tile){
 				console.log("wait_turn_second: turn -> ...");
-				state = states.wait_turn_first;
 				if (tile.matches(current_up)) {
 					console.log("match");
 					current_up.freeze();
@@ -25,11 +27,20 @@ var memory = function(){
 					if (allDone()){
 						finishGame();
 					};
+					state = states.wait_turn_first;
 				} else {
 					console.log("no match");
 					scheduleTurnBack([current_up, tile]);
+					state = states.wait_turned_back;
 				}
-			}
+			},
+			canTurn: function() { return true; }
+		},
+		wait_turned_back: {
+			turned_back: function(){
+				state = states.wait_turn_first;
+			},
+			canTurn: function() { return false; }
 		},
 		won: ""
 	};
@@ -40,6 +51,7 @@ var memory = function(){
 			for (var i=0; i != tiles.length; ++i){
 				tiles[i].turn();
 			};
+			state.turned_back();
 		}, 2000);
 	};
 	var finishGame = function(){
@@ -106,7 +118,9 @@ var memory = function(){
 		tile.turn = tile.up;
 		
 		var turnTile = function(){
-			tile.turn();
+			if (state.canTurn()){
+				tile.turn();
+			}
 		};
 		$(tile).bind("click", turnTile);
 		return tile;
