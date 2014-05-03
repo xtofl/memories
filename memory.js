@@ -35,17 +35,22 @@ var memory = function(){
 
 	var createTile = function(i){
 		var tile = document.createElement("div");
-		tile.appendChild(createImage(i));
-		tile.appendChild(createBack(i));
-		img.setAttribute("class", "face-down");
+		var img = createImage(i);
+		tile.appendChild(img);
+		var back = createBack(i);
+		tile.appendChild(back);
+		tile.setAttribute("class", "face-down");
+		$(tile).click(function(){
+			tile.setAttribute("class", "face-up");
+		});
 		return tile;
 	};
 
 	var memory = {
 		build: function(element){
 			       for (var i=0; i != 9; ++i) {
-				       var img = createImage(i);
-				       element.append(img);
+				       var tile = createTile(i);
+				       element.append(tile);
 			       }
 		},
 		start: function(){ 
