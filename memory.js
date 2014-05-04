@@ -140,7 +140,7 @@ var memory = function(settings){
 	};
 
 	var memory = {
-		build: function(element){
+		deal: function(element){
 				var tiles = [];
 				for (var i=0; i != settings.images.length; ++i) {
 					tiles.push(createTile(settings.images[i]));
