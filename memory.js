@@ -20,23 +20,7 @@ var memory = function(settings){
 		wait_turn_second: {
 			turn: function(tile){
 				console.log("wait_turn_second: turn -> ...");
-				if (tile.matches(current_up)) {
-					console.log("match ...");
-					current_up.done();
-					tile.done();
-					if (allDone()){
-						console.log("... won");
-						finishGame();
-						state = states.won;
-					} else {
-						console.log("... wait_turn_first");
-						state = states.wait_turn_first;
-					}
-				} else {
-					console.log("no match");
-					scheduleTurnBack([current_up, tile]);
-					state = states.wait_turned_back;
-				}
+				turn_second_tile(tile);
 			},
 			canTurn: function() { return true; }
 		},
@@ -48,6 +32,26 @@ var memory = function(settings){
 			canTurn: function() { return false; }
 		},
 		won: ""
+	};
+
+	var turn_second_tile = function(tile){
+		if (tile.matches(current_up)) {
+			console.log("match ...");
+			current_up.done();
+			tile.done();
+			if (allDone()){
+				console.log("... won");
+				finishGame();
+				state = states.won;
+			} else {
+				console.log("... wait_turn_first");
+				state = states.wait_turn_first;
+			}
+		} else {
+			console.log("no match");
+			scheduleTurnBack([current_up, tile]);
+			state = states.wait_turned_back;
+		}
 	};
 	var scheduleTurnBack = function(tiles){
 		console.log("scheduling turn back tiles");
