@@ -16,29 +16,30 @@ var empty = function(element) {
 		element.removeChild(element.firstChild);
 	}
 };
+var url = function(i) {
+	return "images/butterfly-"+twoDigit(i+1)+".jpg";
+};
+
+var images = function(){
+	var images = [];
+	var numberOfImages = parseInt(number.value, 10);
+	for (var i=0; i != numberOfImages; ++i) {
+		images.push(url(i));
+	};
+	return images;
+};
 document.addEventListener('DOMContentLoaded', function(){
 	var start = document.getElementById("start");
 	var grid = document.getElementById("grid");
 	var number = document.getElementById("number");
 	var startNewGame = function(){
-		start.innerText = "Restart";
-		empty(grid);
-		var images = [];
-		
-		var numberOfImages = parseInt(number.value, 10);
-		var url = function(i) {
-			return "images/butterfly-"+twoDigit(i+1)+".jpg";
-			//return "http://eofdreams.com/data_images/dreams/butterfly/butterfly-0"+(i+1)+".jpg";
-		};
-		for (var i=0; i != numberOfImages; ++i) {
-			images.push(url(i));
-		};
 		var game = memory({
-			images: images, 
+			images: images(), 
 			whenFinished: function(){
-				start.innerText = "Start";
+				alert("you won!");
 			}
 		});
+		empty(grid);
 		game.build(grid);
 		game.start();
 	};
