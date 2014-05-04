@@ -5,6 +5,13 @@
 <script src="memory.js"></script>
 <link rel="stylesheet" type="text/css" href="memories.css">
 <script>
+var twoDigit = function(i){
+	if (i<10){
+		return "0"+i;
+	} else {
+		return ""+i;
+	}
+};
 $(function(){
 	var start = $("#start");
 	var grid = $("#grid");
@@ -13,8 +20,12 @@ $(function(){
 		grid.empty();
 		var images = [];
 		var numberOfImages = parseInt($("#number").val(), 10);
+		var url = function(i) {
+			return "images/butterfly-"+twoDigit(i+1)+".jpg";
+			//return "http://eofdreams.com/data_images/dreams/butterfly/butterfly-0"+(i+1)+".jpg";
+		};
 		for (var i=0; i != numberOfImages; ++i) {
-			images.push("images/butterfly-0"+(i+1)+".jpg");
+			images.push(url(i));
 		};
 		var game = memory({
 			images: images, 

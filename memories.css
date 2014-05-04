@@ -1,8 +1,13 @@
 #grid {
 	width: 400px;
 }
-#grid img {
+#grid div {
 	width: 100px;
+}
+#grid img {
+	width: 90px;
+	height: 90px;
+	border: solid black 4px;
 }
 #grid div {
 	display: inline
