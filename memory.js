@@ -22,8 +22,8 @@ var memory = function(settings){
 				console.log("wait_turn_second: turn -> ...");
 				if (tile.matches(current_up)) {
 					console.log("match ...");
-					current_up.freeze();
-					tile.freeze();
+					current_up.done();
+					tile.done();
 					if (allDone()){
 						console.log("... won");
 						finishGame();
@@ -114,7 +114,7 @@ var memory = function(settings){
 			tile.setAttribute("class", "face-down");
 			tile.turn = tile.up;
 		};
-		tile.freeze = function(){
+		tile.done = function(){
 			tile.removeEventListener("click", turnTile);
 			tile.turn = function(){};
 			tile.setAttribute("class", tile.getAttribute("class")+" done");
