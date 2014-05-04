@@ -115,7 +115,7 @@ var memory = function(settings){
 			tile.turn = tile.up;
 		};
 		tile.freeze = function(){
-			$(tile).unbind("click", turnTile);
+			tile.removeEventListener("click", turnTile);
 			tile.turn = function(){};
 			done = true;
 		};
@@ -127,7 +127,7 @@ var memory = function(settings){
 				tile.turn();
 			}
 		};
-		$(tile).bind("click", turnTile);
+		tile.addEventListener("click", turnTile);
 		return tile;
 	};
 
@@ -147,7 +147,7 @@ var memory = function(settings){
 				}
 				tiles = shuffled(tiles);
 				for (var i=0; i != tiles.length; ++i){
-					element.append(tiles[i]);
+					element.appendChild(tiles[i]);
 				}
 				allTiles = tiles;
 		},

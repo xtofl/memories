@@ -1,7 +1,6 @@
 <html>
 <head>
 <title>Memory</title>
-<script src="vendor/jquery/jquery-2.1.1.js"></script>
 <script src="memory.js"></script>
 <link rel="stylesheet" type="text/css" href="memories.css">
 <script>
@@ -12,14 +11,21 @@ var twoDigit = function(i){
 		return ""+i;
 	}
 };
-$(function(){
-	var start = $("#start");
-	var grid = $("#grid");
+var empty = function(element) {
+	while (element.firstChild){
+		element.removeChild(element.firstChild);
+	}
+};
+document.addEventListener('DOMContentLoaded', function(){
+	var start = document.getElementById("start");
+	var grid = document.getElementById("grid");
+	var number = document.getElementById("number");
 	var startNewGame = function(){
-		start.text("Restart");
-		grid.empty();
+		start.innerText = "Restart";
+		empty(grid);
 		var images = [];
-		var numberOfImages = parseInt($("#number").val(), 10);
+		
+		var numberOfImages = parseInt(number.value, 10);
 		var url = function(i) {
 			return "images/butterfly-"+twoDigit(i+1)+".jpg";
 			//return "http://eofdreams.com/data_images/dreams/butterfly/butterfly-0"+(i+1)+".jpg";
@@ -30,13 +36,13 @@ $(function(){
 		var game = memory({
 			images: images, 
 			whenFinished: function(){
-				start.text("Start");
+				start.innerText = "Start";
 			}
 		});
 		game.build(grid);
 		game.start();
 	};
-	start.click(startNewGame);
+	start.addEventListener("click", startNewGame);
 	startNewGame();
 });
 </script>
