@@ -105,14 +105,14 @@ var memory = function(settings){
 		tile.matches = function(other){
 			return tile.img.matches(other.img);
 		};
-		tile.up = function(){
+		tile.turnUp = function(){
 			tile.setAttribute("class", "face-up");
 			state.turn(tile);
-			tile.turn = tile.down;
+			tile.turn = tile.turnDown;
 		};
-		tile.down = function(){
+		tile.turnDown = function(){
 			tile.setAttribute("class", "face-down");
-			tile.turn = tile.up;
+			tile.turn = tile.turnUp;
 		};
 		tile.done = function(){
 			tile.removeEventListener("click", turnTile);
@@ -121,7 +121,7 @@ var memory = function(settings){
 			done = true;
 		};
 		tile.notDone = function(){return !done;}
-		tile.turn = tile.up;
+		tile.turn = tile.turnUp;
 		
 		var turnTile = function(){
 			if (state.canTurn()){
