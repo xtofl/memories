@@ -17,6 +17,9 @@
 	margin: 5px;
 	border: solid black 4px;
 }
+#grid .done img {
+	border: solid blue 4px;
+}
 #grid div {
 	display: inline
 }

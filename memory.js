@@ -117,6 +117,7 @@ var memory = function(settings){
 		tile.freeze = function(){
 			tile.removeEventListener("click", turnTile);
 			tile.turn = function(){};
+			tile.setAttribute("class", tile.getAttribute("class")+" done");
 			done = true;
 		};
 		tile.notDone = function(){return !done;}
