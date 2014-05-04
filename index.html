@@ -15,7 +15,7 @@ var twoDigit = function(i){
 $(function(){
 	var start = $("#start");
 	var grid = $("#grid");
-	start.click(function(){
+	var startNewGame = function(){
 		start.text("Restart");
 		grid.empty();
 		var images = [];
@@ -35,15 +35,20 @@ $(function(){
 		});
 		game.build(grid);
 		game.start();
-	});
+	};
+	start.click(startNewGame());
+	startNewGame();
 });
 </script>
 </head>
 <body>
-<h1>Memory</h1>
-Number of images: <input id="number" type="number" value="3"></input>
-<button id="start">Start</button>
+<div id="control">
+<button id="start">Start</button><br>
+Number of images: <input id="number" type="number" value="8"></input>
+</div>
+<div id="game">
 <div id="grid"></div>
+</div>
 
 
 </body>

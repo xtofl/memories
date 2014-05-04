@@ -1,12 +1,20 @@
+#game {
+	width: 420px;
+}
+#game div {
+	margin-left: auto;
+	margin-right: auto;
+}
 #grid {
 	width: 400px;
 }
 #grid div {
-	width: 100px;
+	width: 105px;
 }
 #grid img {
-	width: 90px;
-	height: 90px;
+	width: 80px;
+	height: 80px;
+	margin: 5px;
 	border: solid black 4px;
 }
 #grid div {
@@ -23,4 +31,18 @@
 }
 #grid .face-up .back {
 	display: none
+}
+
+body {
+	font-family: "Courier New"
+}
+body > div {
+	width: 420px;
+}
+#control {
+	background: lightblue;
+}
+#start {
+	width: 100px;
+	height: 50px;
 }
