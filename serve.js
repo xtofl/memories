@@ -4,6 +4,18 @@ var http = require("http"),
     path = require("path"),
     fs = require("fs")
     port = process.argv[2] || 8080;
+
+var contentTypeFromExtension = function(file){
+	if (/\.js$/.test(file)){
+		return "text/javascript";
+	} else if (/\.html$/.test(file)){
+		return "text/html";
+	} else if (/\.css$/.test(file)){
+		return "text/css";
+	} else {
+		return "text/plain";
+	}
+};
  
 http.createServer(function(request, response) {
  
@@ -28,7 +40,7 @@ http.createServer(function(request, response) {
         return;
       }
  
-      response.writeHead(200);
+      response.writeHead(200, {"Content-Type": contentTypeFromExtension(filename)});
       response.write(file, "binary");
       response.end();
     });
