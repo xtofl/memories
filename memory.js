@@ -144,8 +144,13 @@ var memory = function(settings){
 		};
 	}
 
-	var shuffled = function(elements) {
-		return elements.slice().sort(function(){return 0.5 - Math.random();});
+	var shuffled;
+	if (settings.shuffle) {
+		shuffled = settings.shuffle;
+	} else {
+		shuffled = function(elements) {
+			return elements.slice().sort(function(){return 0.5 - Math.random();});
+		};
 	};
 
 	var onGameFinish = function(){

@@ -14,7 +14,16 @@ describe("The Memory game state machine", function(){
 		return newTile;
 	}};
 	tileFactory.createTile.calls = [];
-	var settings = {images:["x","y","z"], createTile: tileFactory.createTile};
+	var shuffle = function(arr) {
+		shuffle.calls.push({arr: arr});
+		return arr;
+	};
+	shuffle.calls = [];
+	var settings = {
+		images:["x","y","z"], 
+		createTile: tileFactory.createTile, 
+		shuffle: shuffle
+	};
 	var game = memory(settings);
 	it("should create two tiles for each image", function(){
 		game.deal(element);
@@ -27,6 +36,11 @@ describe("The Memory game state machine", function(){
 	it("should deal two tiles per image", function(){
 		game.deal(element);
 		expect(game.tiles.length).toBe(6);
+	});
+	it("should shuffle tiles when dealing", function(){
+		shuffle.calls = []
+		game.deal(element);
+		expect(shuffle.calls.length).toBe(1);
 	});
 	it("should start with all tiles face down", function(){
 		game.deal(element);
