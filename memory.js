@@ -133,13 +133,6 @@ var memory = function(settings){
 			};
 			tile.notDone = function(){return !done;}
 			tile.turn = tile.turnUp;
-
-			var turnTile = function(){
-				if (state.canTurn()){
-					tile.turn();
-				}
-			};
-			tile.addEventListener("click", turnTile);
 			return tile;
 		};
 	}
@@ -165,10 +158,17 @@ var memory = function(settings){
 					tiles.push(memory.createTile(settings.images[i]));
 				}
 				tiles = shuffled(tiles);
-				for (var i=0; i != tiles.length; ++i){
-					element.appendChild(tiles[i]);
-					tiles[i].faceDown();
-				}
+				tiles.forEach(function(tile){
+					element.appendChild(tile);
+					tile.faceDown();
+
+					var turnTile = function(){
+						if (state.canTurn()){
+							tile.turn();
+						}
+					};
+					tile.addEventListener("click", turnTile);
+				});
 				allTiles = tiles;
 				memory.tiles = tiles;
 		},

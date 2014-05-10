@@ -7,11 +7,16 @@ describe("The Memory game state machine", function(){
 		var tileFactory = {
 			createTile: function(image){
 				tileFactory.createTile.calls.push({image: image});
+				var addEventListener = function(name, handler){
+					addEventListener.calls.push({name: name, handler: handler});
+				};
+				addEventListener.calls = [];
 				var newTile = {
 					image: image,
 					facedUp: true,
 					turn: function(){ newTile.facedUp = !newTile.facedUp; },
-					faceDown: function() { newTile.facedUp = false; }
+					faceDown: function() { newTile.facedUp = false; },
+					addEventListener: addEventListener
 				};
 				tiles.push(newTile);
 				return newTile;
@@ -45,6 +50,11 @@ describe("The Memory game state machine", function(){
 		this.game.deal(this.element);
 		expect(this.game.tiles.length).toBe(6);
 	});
+	it("should add shuffled tiles to element", function(){
+		this.element.appendChild.calls = [];
+		this.game.deal(this.element);
+		expect(this.element.appendChild.calls.length).toBe(this.tiles.length);
+	});
 	it("should shuffle tiles when dealing", function(){
 		this.shuffle.calls = []
 		this.game.deal(this.element);
@@ -57,7 +67,14 @@ describe("The Memory game state machine", function(){
 		};
 		expect(this.tiles.filter(facedUp).length).toBe(0);
 	});
-	it("should not accept two clicks on same tile", function(){
-		
+	it("should install click handler on every tile", function(){
+		this.game.deal(this.element);
+		var shouldHaveEventlistener = function(tile){
+			var calls = tile.addEventListener.calls;
+			expect(calls.length).toBe(1);
+			expect(calls[0].name).toEqual("click");
+			expect(calls[0].handler).toBeDefined();
+		};
+		this.tiles.forEach(shouldHaveEventlistener);
 	});
 });
