@@ -97,44 +97,52 @@ var memory = function(settings){
 		return img;
 	};
 
-	var createTile = function(i){
-		var tile = document.createElement("div");
-		var done = false;
-		var img = createImage(i);
-		tile.appendChild(img);
-		tile.img = img;
-		var back = createBack(i);
-		tile.appendChild(back);
-		tile.setAttribute("class", "face-down");
-		tile.matches = function(other){
-			return tile.img.matches(other.img);
-		};
-		tile.turnUp = function(){
-			tile.setAttribute("class", "face-up");
-			state.turn(tile);
-			tile.turn = tile.turnDown;
-		};
-		tile.turnDown = function(){
+	var createTile;
+	if (settings.createTile) {
+		createTile = settings.createTile;
+	} else {
+		createTile = function(i){
+			var tile = document.createElement("div");
+			var done = false;
+			var img = createImage(i);
+			tile.appendChild(img);
+			tile.img = img;
+			var back = createBack(i);
+			tile.appendChild(back);
 			tile.setAttribute("class", "face-down");
+			tile.matches = function(other){
+				return tile.img.matches(other.img);
+			};
+			tile.turnUp = function(){
+				tile.setAttribute("class", "face-up");
+				if (!state.turn){
+					console.log("BBAAAH");
+				}
+				state.turn(tile);
+				tile.turn = tile.faceDown;
+			};
+			tile.faceDown = function(){
+				tile.setAttribute("class", "face-down");
+				tile.turn = tile.turnUp;
+			};
+			tile.done = function(){
+				tile.removeEventListener("click", turnTile);
+				tile.turn = function(){};
+				tile.setAttribute("class", tile.getAttribute("class")+" done");
+				done = true;
+			};
+			tile.notDone = function(){return !done;}
 			tile.turn = tile.turnUp;
+
+			var turnTile = function(){
+				if (state.canTurn()){
+					tile.turn();
+				}
+			};
+			tile.addEventListener("click", turnTile);
+			return tile;
 		};
-		tile.done = function(){
-			tile.removeEventListener("click", turnTile);
-			tile.turn = function(){};
-			tile.setAttribute("class", tile.getAttribute("class")+" done");
-			done = true;
-		};
-		tile.notDone = function(){return !done;}
-		tile.turn = tile.turnUp;
-		
-		var turnTile = function(){
-			if (state.canTurn()){
-				tile.turn();
-			}
-		};
-		tile.addEventListener("click", turnTile);
-		return tile;
-	};
+	}
 
 	var shuffled = function(elements) {
 		return elements.slice().sort(function(){return 0.5 - Math.random();});
@@ -144,17 +152,20 @@ var memory = function(settings){
 	};
 
 	var memory = {
+		createTile: createTile,
 		deal: function(element){
 				var tiles = [];
 				for (var i=0; i != settings.images.length; ++i) {
-					tiles.push(createTile(settings.images[i]));
-					tiles.push(createTile(settings.images[i]));
+					tiles.push(memory.createTile(settings.images[i]));
+					tiles.push(memory.createTile(settings.images[i]));
 				}
 				tiles = shuffled(tiles);
 				for (var i=0; i != tiles.length; ++i){
 					element.appendChild(tiles[i]);
+					tiles[i].faceDown();
 				}
 				allTiles = tiles;
+				memory.tiles = tiles;
 		},
 		start: function(){ 
 			state.started();
