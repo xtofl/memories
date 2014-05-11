@@ -115,15 +115,13 @@ describe("The Memory game state machine", function(){
 		};
 		this.tiles.forEach(shouldHaveEventlistener);
 	});
-	it("should not listen to two clicks on same tile", function(){
-		return;
+	it("should not listen to two turns on same tile", function(){
 		this.game.deal(this.element);
 		var tile = this.tiles[0];
-		var onClick = tile.addEventListener.calls[0].handler;
 		expect(tile.turn.calls.length).toBe(0);
-		onClick();
+		this.game.turn(tile);
 		expect(tile.turn.calls.length).toBe(1);
-		onClick();
+		this.game.turn(tile);
 		expect(tile.turn.calls.length).toBe(1);
 	});
 });

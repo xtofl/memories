@@ -7,7 +7,7 @@ var memory = function(settings){
 				console.log("begin: started -> wait_turn_first");
 				state = states.wait_turn_first;
 			},
-			canTurn: function() { return true; }
+			canTurn: function(tile) { return true; }
 		},
 		wait_turn_first: {
 			turn: function(tile){
@@ -15,14 +15,16 @@ var memory = function(settings){
 				state = states.wait_turn_second;
 				current_up = tile;
 			},
-			canTurn: function() { return true; }
+			canTurn: function(tile) { return true; }
 		},
 		wait_turn_second: {
 			turn: function(tile){
 				console.log("wait_turn_second: turn -> ...");
 				turn_second_tile(tile);
 			},
-			canTurn: function() { return true; }
+			canTurn: function(tile) { 
+				return tile !== current_up; 
+			}
 		},
 		wait_turned_back: {
 			turned_back: function(){
@@ -163,7 +165,7 @@ var memory = function(settings){
 					tile.faceDown();
 
 					var turnTile = function(){
-						if (state.canTurn()){
+						if (state.canTurn(tile)){
 							tile.turn();
 						}
 					};
