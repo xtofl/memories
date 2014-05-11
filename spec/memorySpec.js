@@ -1,7 +1,41 @@
+var addCallCount = function(argumentProto, f){
+	var newF = function(){
+		var i = 0;
+		var argumentObject = {};
+		for(var key in argumentProto){
+			argumentObject[key] = arguments[i++];
+		}	
+		newF.calls.push(argumentObject);
+		return f.apply(this, arguments);
+	};
+	newF.calls = [];
+	return newF;
+};
+
+describe("AddCallCount decorator", function(){
+	
+	it("records a call", function(){
+		var c = addCallCount({}, function(){});
+		c();
+		expect(c.calls.length).toBe(1);
+	});
+	
+	it("records arguments provided to a call", function(){
+		var c = addCallCount({x: 1, y: 2}, function(){});
+		c(10, 20);
+		expect(c.calls.length).toBe(1);
+		expect(c.calls[0].x).toBe(10);
+		expect(c.calls[0].y).toBe(20);
+	});
+});
+
 describe("The Memory game state machine", function(){
 	beforeEach(function() {
 		var stateMachine;
-		this.element = {appendChild: function(){}};
+		this.element = {
+			appendChild: addCallCount({child: null}, 
+				function(child){})
+		};
 		var tiles = [];
 		this.tiles = tiles;
 		var tileFactory = {
@@ -14,10 +48,14 @@ describe("The Memory game state machine", function(){
 				var newTile = {
 					image: image,
 					facedUp: true,
-					turn: function(){ newTile.facedUp = !newTile.facedUp; },
+					turn: function(){ 
+						newTile.facedUp = !newTile.facedUp; 
+						newTile.turn.calls.push({});
+					},
 					faceDown: function() { newTile.facedUp = false; },
 					addEventListener: addEventListener
 				};
+				newTile.turn.calls = [];
 				tiles.push(newTile);
 				return newTile;
 			}
@@ -76,5 +114,16 @@ describe("The Memory game state machine", function(){
 			expect(calls[0].handler).toBeDefined();
 		};
 		this.tiles.forEach(shouldHaveEventlistener);
+	});
+	it("should not listen to two clicks on same tile", function(){
+		return;
+		this.game.deal(this.element);
+		var tile = this.tiles[0];
+		var onClick = tile.addEventListener.calls[0].handler;
+		expect(tile.turn.calls.length).toBe(0);
+		onClick();
+		expect(tile.turn.calls.length).toBe(1);
+		onClick();
+		expect(tile.turn.calls.length).toBe(1);
 	});
 });
