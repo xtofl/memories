@@ -14,6 +14,7 @@ var memory = function(settings){
 				console.log("wait_turn_first: turn -> wait_turn_second");
 				state = states.wait_turn_second;
 				current_up = tile;
+				tile.faceUp();
 			},
 			canTurn: function(tile) { return true; }
 		},
@@ -37,6 +38,8 @@ var memory = function(settings){
 	};
 
 	var turn_second_tile = function(tile){
+		if (tile === current_up) return;
+		tile.faceUp();
 		if (tile.matches(current_up)) {
 			console.log("match ...");
 			current_up.done();
@@ -55,12 +58,13 @@ var memory = function(settings){
 			state = states.wait_turned_back;
 		}
 	};
+	var schedule = settings.setTimeout || setTimeout;
 	var scheduleTurnBack = function(tiles){
 		console.log("scheduling turn back tiles");
-		setTimeout(function(){
+		schedule(function(){
 		        console.log("turning back tiles");
 			for (var i=0; i != tiles.length; ++i){
-				tiles[i].turn();
+				tiles[i].faceDown();
 			};
 			state.turned_back();
 		}, 2000);
@@ -115,26 +119,17 @@ var memory = function(settings){
 			tile.matches = function(other){
 				return tile.img.matches(other.img);
 			};
-			tile.turnUp = function(){
+			tile.faceUp = function(){
 				tile.setAttribute("class", "face-up");
-				if (!state.turn){
-					console.log("BBAAAH");
-				}
-				state.turn(tile);
-				tile.turn = tile.faceDown;
 			};
 			tile.faceDown = function(){
 				tile.setAttribute("class", "face-down");
-				tile.turn = tile.turnUp;
 			};
 			tile.done = function(){
-				tile.removeEventListener("click", turnTile);
-				tile.turn = function(){};
 				tile.setAttribute("class", tile.getAttribute("class")+" done");
 				done = true;
 			};
 			tile.notDone = function(){return !done;}
-			tile.turn = tile.turnUp;
 			return tile;
 		};
 	}
@@ -166,13 +161,16 @@ var memory = function(settings){
 
 					var turnTile = function(){
 						if (state.canTurn(tile)){
-							tile.turn();
+							state.turn(tile);
 						}
 					};
 					tile.addEventListener("click", turnTile);
 				});
 				allTiles = tiles;
 				memory.tiles = tiles;
+		},
+		turn: function(tile) {
+			state.turn(tile);
 		},
 		start: function(){ 
 			state.started();

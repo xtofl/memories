@@ -48,14 +48,17 @@ describe("The Memory game state machine", function(){
 				var newTile = {
 					image: image,
 					facedUp: true,
-					turn: function(){ 
-						newTile.facedUp = !newTile.facedUp; 
-						newTile.turn.calls.push({});
-					},
-					faceDown: function() { newTile.facedUp = false; },
+					faceUp: addCallCount({}, function(){ 
+						newTile.facedUp = true;
+					}),
+					faceDown: addCallCount({}, function(){ 
+						newTile.facedUp = false;
+					}),
+					matches: addCallCount({tile: null}, function(tile){
+						return newTile.matchTile === tile;
+					}),
 					addEventListener: addEventListener
 				};
-				newTile.turn.calls = [];
 				tiles.push(newTile);
 				return newTile;
 			}
@@ -71,7 +74,9 @@ describe("The Memory game state machine", function(){
 		this.settings = {
 			images:["x","y","z"], 
 			createTile: this.tileFactory.createTile, 
-			shuffle: this.shuffle
+			shuffle: this.shuffle,
+			setTimeout: addCallCount({f: null, time: null}, function(f,time){
+			})
 		};
 		this.game = memory(this.settings);
 	});
@@ -117,11 +122,42 @@ describe("The Memory game state machine", function(){
 	});
 	it("should not listen to two turns on same tile", function(){
 		this.game.deal(this.element);
+		this.game.start();
 		var tile = this.tiles[0];
-		expect(tile.turn.calls.length).toBe(0);
+		expect(tile.faceUp.calls.length).toBe(0);
 		this.game.turn(tile);
-		expect(tile.turn.calls.length).toBe(1);
+		expect(tile.faceUp.calls.length).toBe(1);
 		this.game.turn(tile);
-		expect(tile.turn.calls.length).toBe(1);
+		expect(tile.faceUp.calls.length).toBe(1);
+	});
+	it("should turns up the second tile", function(){
+		this.game.deal(this.element);
+		this.game.start();
+		expect(this.tiles[0].faceUp.calls.length).toBe(0);
+		this.game.turn(this.tiles[0]);
+		expect(this.tiles[0].faceUp.calls.length).toBe(1);
+		this.game.turn(this.tiles[1]);
+		expect(this.tiles[1].faceUp.calls.length).toBe(1);
+	});
+	it("should schedule an action after turning up the second tile", function(){
+		this.game.deal(this.element);
+		this.game.start();
+		this.game.turn(this.tiles[0]);
+		this.game.turn(this.tiles[1]);
+		expect(this.settings.setTimeout.calls.length).toBe(1);
+	});
+	it("should have a scheduled action that faces down tiles after turning up the second tile", function(){
+		this.game.deal(this.element);
+		this.game.start();
+		this.game.turn(this.tiles[0]);
+		this.game.turn(this.tiles[1]);
+
+		this.tiles[0].faceDown.calls = [];
+		this.tiles[1].faceDown.calls = [];
+
+		this.settings.setTimeout.calls[0].f();
+
+		expect(this.tiles[0].faceDown.calls.length).toBe(1);
+		expect(this.tiles[1].faceDown.calls.length).toBe(1);
 	});
 });
