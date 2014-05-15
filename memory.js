@@ -146,6 +146,10 @@ var memory = function(settings){
 	var onGameFinish = function(){
 	};
 
+	var statistics = {
+		turns: 0
+	};
+
 	var memory = {
 		createTile: createTile,
 		deal: function(element){
@@ -170,11 +174,16 @@ var memory = function(settings){
 				memory.tiles = tiles;
 		},
 		turn: function(tile) {
+			++statistics.turns;
+			settings.stats(statistics);
 			state.turn(tile);
 		},
 		start: function(){ 
 			state.started();
 		},
+		stats: function(){
+			return statistics;
+		}
 	};
 	return memory;
 };

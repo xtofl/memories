@@ -29,7 +29,7 @@ describe("AddCallCount decorator", function(){
 	});
 });
 
-describe("The Memory game state machine", function(){
+describe("The Memory game ", function(){
 	beforeEach(function() {
 		var stateMachine;
 		this.element = {
@@ -76,7 +76,8 @@ describe("The Memory game state machine", function(){
 			createTile: this.tileFactory.createTile, 
 			shuffle: this.shuffle,
 			setTimeout: addCallCount({f: null, time: null}, function(f,time){
-			})
+			}),
+			stats: addCallCount({stats: null}, function(stats){})
 		};
 		this.game = memory(this.settings);
 	});
@@ -159,5 +160,15 @@ describe("The Memory game state machine", function(){
 
 		expect(this.tiles[0].faceDown.calls.length).toBe(1);
 		expect(this.tiles[1].faceDown.calls.length).toBe(1);
+	});
+	it("should keep a score counter that is updated on every move", function(){
+		this.game.deal(this.element);
+		this.game.start();
+		this.game.turn(this.tiles[0]);
+		expect(this.settings.stats.calls.length).toBe(1);
+		expect(this.settings.stats.calls[0].stats.turns).toBe(1);
+		this.game.turn(this.tiles[1]);
+		expect(this.settings.stats.calls.length).toBe(2);
+		expect(this.settings.stats.calls[1].stats.turns).toBe(2);
 	});
 });
