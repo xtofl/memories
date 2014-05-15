@@ -28,6 +28,11 @@ var images = function(){
 	};
 	return images;
 };
+
+var updateTurns = function(turns){
+	var number = document.getElementById("stats_turns");
+	number.textContent =turns;
+};
 document.addEventListener('DOMContentLoaded', function(){
 	var start = document.getElementById("start");
 	var grid = document.getElementById("grid");
@@ -37,6 +42,9 @@ document.addEventListener('DOMContentLoaded', function(){
 			images: images(), 
 			whenFinished: function(){
 				alert("you won!");
+			},
+			stats: function(stats){
+				updateTurns(stats.turns);
 			}
 		});
 		empty(grid);
@@ -55,6 +63,9 @@ Number of images: <input id="number" type="number" value="8"></input>
 </div>
 <div id="game">
 <div id="grid"></div>
+<div id="stats">
+	Turns: <div id="stats_turns"></div>
+</div>
 </div>
 
 

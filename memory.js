@@ -164,9 +164,7 @@ var memory = function(settings){
 					tile.faceDown();
 
 					var turnTile = function(){
-						if (state.canTurn(tile)){
-							state.turn(tile);
-						}
+						memory.turn(tile);
 					};
 					tile.addEventListener("click", turnTile);
 				});
@@ -174,9 +172,11 @@ var memory = function(settings){
 				memory.tiles = tiles;
 		},
 		turn: function(tile) {
-			++statistics.turns;
-			settings.stats(statistics);
-			state.turn(tile);
+		      if (state.canTurn(tile)){
+				++statistics.turns;
+				settings.stats(statistics);
+				state.turn(tile);
+		      }
 		},
 		start: function(){ 
 			state.started();
