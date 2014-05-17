@@ -34,6 +34,7 @@ var memory = function(settings){
 					turned_up_tiles.forEach(function(tile){
 						tile.faceDown();
 					});
+					unscheduleTurnBack();
 					console.log("wait_turned_back: you turned back....");
 				}
 			},
@@ -71,16 +72,19 @@ var memory = function(settings){
 		}
 	};
 	var schedule = settings.setTimeout || setTimeout;
+	var unschedule = settings.clearTimeout || clearTimeout;
 	var scheduleTurnBack = function(tiles){
 		console.log("scheduling turn back tiles");
-		schedule(function(){
+		var id = schedule(function(){
 		        console.log("turning back tiles");
 			for (var i=0; i != tiles.length; ++i){
 				tiles[i].faceDown();
 			};
 			state.turned_back();
 		}, 2000);
+		unscheduleTurnBack = function(){ unschedule(id); };
 	};
+	var unscheduleTurnBack = function(){};
 	var finishGame = function(){
 		settings.whenFinished();
 	};

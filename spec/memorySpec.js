@@ -75,8 +75,8 @@ describe("The Memory game ", function(){
 			images:["x","y","z"], 
 			createTile: this.tileFactory.createTile, 
 			shuffle: this.shuffle,
-			setTimeout: addCallCount({f: null, time: null}, function(f,time){
-			}),
+			setTimeout: addCallCount({f: null, time: null}, function(f,time){}),
+			clearTimeout: addCallCount({id: null, time: null}, function(id){}),
 			stats: addCallCount({stats: null}, function(stats){})
 		};
 		this.game = memory(this.settings);
@@ -184,6 +184,8 @@ describe("The Memory game ", function(){
 	it("should allow me to flip back the tiles myself", function(){
 		this.game.deal(this.element);
 		this.game.start();
+		var id = {};
+		this.settings.setTimeout.stubReturn = id;
 		this.game.turn(this.tiles[0]);
 		this.game.turn(this.tiles[1]);
 
@@ -193,6 +195,7 @@ describe("The Memory game ", function(){
 
 		expect(this.tiles[0].faceDown.calls.length).toBe(1);
 		expect(this.tiles[1].faceDown.calls.length).toBe(1);
-		//this.settings.setTimeout.calls[0].f();
+		this.settings.setTimeout.calls[0].f
+		expect(this.settings.clearTimeout.calls[0].id).toBe(id);
 	});
 });
