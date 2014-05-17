@@ -35,6 +35,7 @@ var memory = function(settings){
 						tile.faceDown();
 					});
 					unscheduleTurnBack();
+					state.turned_back();
 					console.log("wait_turned_back: you turned back....");
 				}
 			},
