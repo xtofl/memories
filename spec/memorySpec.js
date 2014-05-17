@@ -6,7 +6,11 @@ var addCallCount = function(argumentProto, f){
 			argumentObject[key] = arguments[i++];
 		}	
 		newF.calls.push(argumentObject);
-		return f.apply(this, arguments);
+		if (typeof(newF.stubReturn) !== 'undefined'){
+			return newF.stubReturn;
+		} else {
+			return f.apply(this, arguments);
+		}
 	};
 	newF.calls = [];
 	return newF;
@@ -26,6 +30,21 @@ describe("AddCallCount decorator", function(){
 		expect(c.calls.length).toBe(1);
 		expect(c.calls[0].x).toBe(10);
 		expect(c.calls[0].y).toBe(20);
+	});
+	
+	it("forwads the functions return value", function(){
+		var r = {};
+		var c = addCallCount({x: 1, y: 2}, function(){return r});
+		c(10, 20);
+		expect(c()).toBe(r);
+	});
+	
+	it("returns a provided stub", function(){
+		var c = addCallCount({x: 1, y: 2}, function(){});
+		c(10, 20);
+		var r = {};
+		c.stubReturn = r;
+		expect(c()).toBe(r);
 	});
 });
 
