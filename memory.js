@@ -115,12 +115,12 @@ var memory = function(settings){
 			tile.img = img;
 			var back = createBack(i);
 			tile.appendChild(back);
-			tile.setAttribute("class", "face-down");
+			tile.setAttribute("class", "tile face-down");
 			tile.matches = function(other){
 				return tile.img.matches(other.img);
 			};
 			tile.faceUp = function(){
-				tile.setAttribute("class", "face-up");
+				tile.setAttribute("class", "tile face-up");
 			};
 			tile.faceDown = function(){
 				tile.setAttribute("class", "face-down");
