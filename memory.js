@@ -1,6 +1,7 @@
 //require jquery
 var memory = function(settings){
 	var current_up = null;
+	var turned_up_tiles = [];
 	var states = {
 		begin: { 
 			started: function(){
@@ -28,11 +29,21 @@ var memory = function(settings){
 			}
 		},
 		wait_turned_back: {
+			turn: function(tile){
+				if (turned_up_tiles.indexOf(tile) != -1) {
+					turned_up_tiles.forEach(function(tile){
+						tile.faceDown();
+					});
+					console.log("wait_turned_back: you turned back....");
+				}
+			},
 			turned_back: function(){
 				console.log("wait_turned_back: turned_back -> wait_turn_first");
 				state = states.wait_turn_first;
 			},
-			canTurn: function() { return false; }
+			canTurn: function(tile) { 
+				return true; 
+			}
 		},
 		won: ""
 	};
@@ -54,7 +65,8 @@ var memory = function(settings){
 			}
 		} else {
 			console.log("no match");
-			scheduleTurnBack([current_up, tile]);
+			turned_up_tiles = [current_up, tile];
+			scheduleTurnBack(turned_up_tiles);
 			state = states.wait_turned_back;
 		}
 	};

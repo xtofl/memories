@@ -181,4 +181,18 @@ describe("The Memory game ", function(){
 		expect(this.settings.stats.calls[1].stats.turns).toBe(3);
 		expect(this.settings.stats.calls[0].stats.sameTile).toBe(1);
 	});
+	it("should allow me to flip back the tiles myself", function(){
+		this.game.deal(this.element);
+		this.game.start();
+		this.game.turn(this.tiles[0]);
+		this.game.turn(this.tiles[1]);
+
+		this.tiles[0].faceDown.calls = [];
+		this.tiles[1].faceDown.calls = [];
+		this.game.turn(this.tiles[1]);
+
+		expect(this.tiles[0].faceDown.calls.length).toBe(1);
+		expect(this.tiles[1].faceDown.calls.length).toBe(1);
+		//this.settings.setTimeout.calls[0].f();
+	});
 });
