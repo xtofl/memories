@@ -163,12 +163,22 @@ describe("The Memory game ", function(){
 	});
 	it("should keep a score counter that is updated on every move", function(){
 		this.game.deal(this.element);
+		expect(this.tiles[0]).not.toBe(this.tiles[1]);
+		expect(this.tiles[0]).not.toBe(this.tiles[2]);
+		expect(this.tiles[1]).not.toBe(this.tiles[2]);
 		this.game.start();
 		this.game.turn(this.tiles[0]);
 		expect(this.settings.stats.calls.length).toBe(1);
 		expect(this.settings.stats.calls[0].stats.turns).toBe(1);
+		expect(this.settings.stats.calls[0].stats.sameTile).toBe(0);
 		this.game.turn(this.tiles[1]);
 		expect(this.settings.stats.calls.length).toBe(2);
 		expect(this.settings.stats.calls[1].stats.turns).toBe(2);
+		expect(this.settings.stats.calls[0].stats.sameTile).toBe(0);
+		this.settings.setTimeout.calls[0].f();
+		this.game.turn(this.tiles[1]);
+		expect(this.settings.stats.calls.length).toBe(3);
+		expect(this.settings.stats.calls[1].stats.turns).toBe(3);
+		expect(this.settings.stats.calls[0].stats.sameTile).toBe(1);
 	});
 });

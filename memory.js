@@ -147,7 +147,9 @@ var memory = function(settings){
 	};
 
 	var statistics = {
-		turns: 0
+		turns: 0,
+		alreadyTurned: [],
+		sameTile: 0
 	};
 
 	var memory = {
@@ -174,6 +176,10 @@ var memory = function(settings){
 		turn: function(tile) {
 		      if (state.canTurn(tile)){
 				++statistics.turns;
+				if (statistics.alreadyTurned.indexOf(tile) > -1) {
+					++statistics.sameTile;
+				}
+				statistics.alreadyTurned.push(tile);
 				settings.stats(statistics);
 				state.turn(tile);
 		      }

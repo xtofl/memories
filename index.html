@@ -29,9 +29,9 @@ var images = function(){
 	return images;
 };
 
-var updateTurns = function(turns){
-	var number = document.getElementById("stats_turns");
-	number.textContent =turns;
+var updateStats = function(stats){
+	document.getElementById("stats_turns").textContent = stats.turns;
+	document.getElementById("stats_sametile").textContent = stats.sameTile;
 };
 document.addEventListener('DOMContentLoaded', function(){
 	var start = document.getElementById("start");
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function(){
 				alert("you won!");
 			},
 			stats: function(stats){
-				updateTurns(stats.turns);
+				updateStats(stats);
 			}
 		});
 		empty(grid);
@@ -65,6 +65,7 @@ Number of images: <input id="number" type="number" value="8"></input>
 <div id="grid"></div>
 <div id="stats">
 	Turns: <div id="stats_turns"></div>
+	Same Tile: <div id="stats_sametile"></div>
 </div>
 </div>
 

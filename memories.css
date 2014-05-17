@@ -5,6 +5,10 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+#stats div {
+	margin-left: auto;
+	margin-right: auto;
+}
 #grid {
 	width: 400px;
 }
