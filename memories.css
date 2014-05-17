@@ -5,11 +5,13 @@
 	margin-left: auto;
 	margin-right: auto;
 }
-#stats div {
-	margin-left: auto;
-	margin-right: auto;
+#stats {
+	display: inline;
+}
+#stats li {
 }
 #grid {
+	display: inline;
 	width: 400px;
 }
 #grid div {
