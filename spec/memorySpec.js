@@ -101,7 +101,7 @@ describe("The Memory game ", function(){
 		expect(this.element.appendChild.calls.length).toBe(this.tiles.length);
 	});
 	it("should shuffle tiles when dealing", function(){
-		this.shuffle.calls = []
+		this.shuffle.calls = [];
 		this.game.deal(this.element);
 		expect(this.shuffle.calls.length).toBe(1);
 	});
