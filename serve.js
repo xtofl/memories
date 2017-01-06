@@ -1,9 +1,9 @@
 #!/usr/bin/node
-var http = require("http"),
-    url = require("url"),
-    path = require("path"),
-    fs = require("fs")
-    port = process.argv[2] || 8080;
+var http = require("http");
+var url = require("url");
+var path = require("path");
+var fs = require("fs");
+var port = process.argv[2] || 8080;
 
 var contentTypeFromExtension = function(file){
 	if (/\.js$/.test(file)){
