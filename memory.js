@@ -70,7 +70,7 @@ var memory = function(settings){
 		console.log("scheduling turn back tiles");
 		schedule(function(){
 		        console.log("turning back tiles");
-			for (var i=0; i != tiles.length; ++i){
+			for (var i=0; i !== tiles.length; ++i){
 				tiles[i].faceDown();
 			};
 			state.turned_back();
@@ -81,7 +81,7 @@ var memory = function(settings){
 	};
 	var allTiles = [];
 	allDone = function(){
-		for (var i=0; i != allTiles.length; ++i){
+		for (var i=0; i !== allTiles.length; ++i){
 			if (allTiles[i].notDone()) {
 				return false;
 			}
@@ -98,7 +98,7 @@ var memory = function(settings){
 		img.setAttribute("class", "front");
 		img.matches = function(other){
 			var other_src = other.getAttribute("src");
-			return src == other_src;
+			return src === other_src;
 		};
 		return img;
 	};
@@ -163,7 +163,7 @@ var memory = function(settings){
 		createTile: createTile,
 		deal: function(element){
 				var tiles = [];
-				for (var i=0; i != settings.images.length; ++i) {
+				for (var i=0; i !== settings.images.length; ++i) {
 					tiles.push(memory.createTile(settings.images[i]));
 					tiles.push(memory.createTile(settings.images[i]));
 				}
