@@ -2,7 +2,8 @@ var addCallCount = function(argumentProto, f){
 	var newF = function(){
 		var i = 0;
 		var argumentObject = {};
-		for(var key in argumentProto){
+        var keys = argumentProto.filter(function(m){ return {}.hasOwnProperty.call(argumentProto, key);
+        for(var key in keys) {
 			argumentObject[key] = arguments[i++];
 		}	
 		newF.calls.push(argumentObject);
