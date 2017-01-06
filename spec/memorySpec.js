@@ -1,3 +1,4 @@
+const memory = require("../memory.js");
 var addCallCount = function(argumentNames, f){
 	var newF = function(){
 		var i = 0;

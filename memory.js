@@ -200,3 +200,7 @@ var memory = function(settings){
 	};
 	return memory;
 };
+
+if (module) {
+    module.exports = memory;
+}
