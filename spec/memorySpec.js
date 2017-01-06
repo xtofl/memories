@@ -1,11 +1,10 @@
 const memory = require("../memory.js");
 var addCallCount = function(argumentNames, f){
 	var newF = function(){
-		var i = 0;
 		var argumentObject = {};
-        for(var key in argumentNames) {
-			argumentObject[argumentNames[key]] = arguments[i++];
-		};
+        for(var i = 0; i !== argumentNames.length; ++i) {
+			argumentObject[argumentNames[i]] = arguments[i];
+		}
 		newF.calls.push(argumentObject);
 		return f.apply(this, arguments);
 	};
