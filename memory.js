@@ -1,4 +1,9 @@
 //require jquery
+var log = function(what) {
+    if (console) {
+        console.log(what);
+    }
+};
 var memory = function(settings){
 	var current_up = null;
 	var state = null;
@@ -11,14 +16,14 @@ var memory = function(settings){
 	var states = {
 		begin: { 
 			started: function(){
-				console.log("begin: started -> wait_turn_first");
+				log("begin: started -> wait_turn_first");
 				state = states.wait_turn_first;
 			},
 			canTurn: function(tile) { return true; }
 		},
 		wait_turn_first: {
 			turn: function(tile){
-				console.log("wait_turn_first: turn -> wait_turn_second");
+				log("wait_turn_first: turn -> wait_turn_second");
 				state = states.wait_turn_second;
 				current_up = tile;
 				tile.faceUp();
@@ -27,7 +32,7 @@ var memory = function(settings){
 		},
 		wait_turn_second: {
 			turn: function(tile){
-				console.log("wait_turn_second: turn -> ...");
+				log("wait_turn_second: turn -> ...");
 				turnSecondTile(tile);
 			},
 			canTurn: function(tile) { 
@@ -36,7 +41,7 @@ var memory = function(settings){
 		},
 		wait_turned_back: {
 			turned_back: function(){
-				console.log("wait_turned_back: turned_back -> wait_turn_first");
+				log("wait_turned_back: turned_back -> wait_turn_first");
 				state = states.wait_turn_first;
 			},
 			canTurn: function() { return false; }
@@ -48,28 +53,28 @@ var memory = function(settings){
 		if (tile === current_up) return;
 		tile.faceUp();
 		if (tile.matches(current_up)) {
-			console.log("match ...");
+			log("match ...");
 			current_up.done();
 			tile.done();
 			if (allDone()){
-				console.log("... won");
+				log("... won");
 				finishGame();
 				state = states.won;
 			} else {
-				console.log("... wait_turn_first");
+				log("... wait_turn_first");
 				state = states.wait_turn_first;
 			}
 		} else {
-			console.log("no match");
+			log("no match");
 			scheduleTurnBack([current_up, tile]);
 			state = states.wait_turned_back;
 		}
 	};
 	var schedule = settings.setTimeout || setTimeout;
 	scheduleTurnBack = function(tiles){
-		console.log("scheduling turn back tiles");
+		log("scheduling turn back tiles");
 		schedule(function(){
-		        console.log("turning back tiles");
+		        log("turning back tiles");
 			for (var i=0; i !== tiles.length; ++i){
 				tiles[i].faceDown();
 			};
