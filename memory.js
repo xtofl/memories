@@ -1,6 +1,13 @@
 //require jquery
 var memory = function(settings){
 	var current_up = null;
+	var state = null;
+
+	var allDone = function(){};
+	var finishGame = function(){};
+	var scheduleTurnBack = function(){};
+	var turnSecondTile = function(){};
+
 	var states = {
 		begin: { 
 			started: function(){
@@ -21,7 +28,7 @@ var memory = function(settings){
 		wait_turn_second: {
 			turn: function(tile){
 				console.log("wait_turn_second: turn -> ...");
-				turn_second_tile(tile);
+				turnSecondTile(tile);
 			},
 			canTurn: function(tile) { 
 				return tile !== current_up; 
@@ -37,7 +44,7 @@ var memory = function(settings){
 		won: ""
 	};
 
-	var turn_second_tile = function(tile){
+	turnSecondTile = function(tile){
 		if (tile === current_up) return;
 		tile.faceUp();
 		if (tile.matches(current_up)) {
@@ -59,29 +66,29 @@ var memory = function(settings){
 		}
 	};
 	var schedule = settings.setTimeout || setTimeout;
-	var scheduleTurnBack = function(tiles){
+	scheduleTurnBack = function(tiles){
 		console.log("scheduling turn back tiles");
 		schedule(function(){
 		        console.log("turning back tiles");
-			for (var i=0; i != tiles.length; ++i){
+			for (var i=0; i !== tiles.length; ++i){
 				tiles[i].faceDown();
 			};
 			state.turned_back();
 		}, 2000);
 	};
-	var finishGame = function(){
+	finishGame = function(){
 		settings.whenFinished();
 	};
 	var allTiles = [];
-	var allDone = function(){
-		for (var i=0; i != allTiles.length; ++i){
+	allDone = function(){
+		for (var i=0; i !== allTiles.length; ++i){
 			if (allTiles[i].notDone()) {
 				return false;
 			}
 		}
 		return true;
 	};
-	var state = states.begin;
+	state = states.begin;
 
 	var createImage = function(i){
 		var img = document.createElement("img");
@@ -90,8 +97,8 @@ var memory = function(settings){
 		img.setAttribute("src", src);
 		img.setAttribute("class", "front");
 		img.matches = function(other){
-			var other_src = other.getAttribute("src");
-			return src == other_src;
+			var otherSrc = other.getAttribute("src");
+			return src === otherSrc;
 		};
 		return img;
 	};
@@ -156,7 +163,7 @@ var memory = function(settings){
 		createTile: createTile,
 		deal: function(element){
 				var tiles = [];
-				for (var i=0; i != settings.images.length; ++i) {
+				for (var i=0; i !== settings.images.length; ++i) {
 					tiles.push(memory.createTile(settings.images[i]));
 					tiles.push(memory.createTile(settings.images[i]));
 				}
@@ -193,3 +200,7 @@ var memory = function(settings){
 	};
 	return memory;
 };
+
+if (module) {
+    module.exports = memory;
+}

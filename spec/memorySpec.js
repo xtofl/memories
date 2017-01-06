@@ -1,10 +1,10 @@
-var addCallCount = function(argumentProto, f){
+const memory = require("../memory.js");
+var addCallCount = function(argumentNames, f){
 	var newF = function(){
-		var i = 0;
 		var argumentObject = {};
-		for(var key in argumentProto){
-			argumentObject[key] = arguments[i++];
-		}	
+        for(var i = 0; i !== argumentNames.length; ++i) {
+			argumentObject[argumentNames[i]] = arguments[i];
+		}
 		newF.calls.push(argumentObject);
 		return f.apply(this, arguments);
 	};
@@ -15,15 +15,16 @@ var addCallCount = function(argumentProto, f){
 describe("AddCallCount decorator", function(){
 	
 	it("records a call", function(){
-		var c = addCallCount({}, function(){});
+		var c = addCallCount([], function(){});
 		c();
 		expect(c.calls.length).toBe(1);
 	});
 	
 	it("records arguments provided to a call", function(){
-		var c = addCallCount({x: 1, y: 2}, function(){});
+		var c = addCallCount(['x', 'y'], function(){});
 		c(10, 20);
 		expect(c.calls.length).toBe(1);
+		expect(c.calls[0]).toEqual({'x': 10, 'y': 20});
 		expect(c.calls[0].x).toBe(10);
 		expect(c.calls[0].y).toBe(20);
 	});
@@ -33,7 +34,7 @@ describe("The Memory game ", function(){
 	beforeEach(function() {
 		var stateMachine;
 		this.element = {
-			appendChild: addCallCount({child: null}, 
+			appendChild: addCallCount(['child'],
 				function(child){})
 		};
 		var tiles = [];
@@ -48,13 +49,13 @@ describe("The Memory game ", function(){
 				var newTile = {
 					image: image,
 					facedUp: true,
-					faceUp: addCallCount({}, function(){ 
+					faceUp: addCallCount([], function(){
 						newTile.facedUp = true;
 					}),
-					faceDown: addCallCount({}, function(){ 
+					faceDown: addCallCount([], function(){
 						newTile.facedUp = false;
 					}),
-					matches: addCallCount({tile: null}, function(tile){
+					matches: addCallCount(['tile'], function(tile){
 						return newTile.matchTile === tile;
 					}),
 					addEventListener: addEventListener
@@ -75,9 +76,9 @@ describe("The Memory game ", function(){
 			images:["x","y","z"], 
 			createTile: this.tileFactory.createTile, 
 			shuffle: this.shuffle,
-			setTimeout: addCallCount({f: null, time: null}, function(f,time){
+			setTimeout: addCallCount(['f', 'time'], function(f,time){
 			}),
-			stats: addCallCount({stats: null}, function(stats){})
+			stats: addCallCount(['stats'], function(stats){})
 		};
 		this.game = memory(this.settings);
 	});

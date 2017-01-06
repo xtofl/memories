@@ -2,5 +2,9 @@
 "name": "memories",
 "version": "0.1.0",
 "dependencies": {
-	}
+    "jasmine": "^2.5.2"
+},
+"scripts": { "test": "node node_modules/jasmine/bin/jasmine.js" },
+"spec_dir": "spec",
+"spec_files": [ "*[sS]pec.js" ]
 }
