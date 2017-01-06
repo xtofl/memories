@@ -2,6 +2,12 @@
 var memory = function(settings){
 	var current_up = null;
 	var state = null;
+
+	var allDone = function(){};
+	var finishGame = function(){};
+	var scheduleTurnBack = function(){};
+	var turn_second_tile = function(){};
+
 	var states = {
 		begin: { 
 			started: function(){
@@ -38,7 +44,7 @@ var memory = function(settings){
 		won: ""
 	};
 
-	var turn_second_tile = function(tile){
+	turn_second_tile = function(tile){
 		if (tile === current_up) return;
 		tile.faceUp();
 		if (tile.matches(current_up)) {
@@ -60,7 +66,7 @@ var memory = function(settings){
 		}
 	};
 	var schedule = settings.setTimeout || setTimeout;
-	var scheduleTurnBack = function(tiles){
+	scheduleTurnBack = function(tiles){
 		console.log("scheduling turn back tiles");
 		schedule(function(){
 		        console.log("turning back tiles");
@@ -70,11 +76,11 @@ var memory = function(settings){
 			state.turned_back();
 		}, 2000);
 	};
-	var finishGame = function(){
+	finishGame = function(){
 		settings.whenFinished();
 	};
 	var allTiles = [];
-	var allDone = function(){
+	allDone = function(){
 		for (var i=0; i != allTiles.length; ++i){
 			if (allTiles[i].notDone()) {
 				return false;
