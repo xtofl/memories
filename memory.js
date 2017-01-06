@@ -77,7 +77,7 @@ var memory = function(settings){
 		        log("turning back tiles");
 			for (var i=0; i !== tiles.length; ++i){
 				tiles[i].faceDown();
-			};
+			}
 			state.turned_back();
 		}, 2000);
 	};
