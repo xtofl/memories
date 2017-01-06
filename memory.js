@@ -1,6 +1,7 @@
 //require jquery
 var memory = function(settings){
 	var current_up = null;
+	var state = null;
 	var states = {
 		begin: { 
 			started: function(){
@@ -81,7 +82,7 @@ var memory = function(settings){
 		}
 		return true;
 	};
-	var state = states.begin;
+	state = states.begin;
 
 	var createImage = function(i){
 		var img = document.createElement("img");
