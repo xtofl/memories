@@ -6,7 +6,7 @@ var memory = function(settings){
 	var allDone = function(){};
 	var finishGame = function(){};
 	var scheduleTurnBack = function(){};
-	var turn_second_tile = function(){};
+	var turnSecondTile = function(){};
 
 	var states = {
 		begin: { 
@@ -28,7 +28,7 @@ var memory = function(settings){
 		wait_turn_second: {
 			turn: function(tile){
 				console.log("wait_turn_second: turn -> ...");
-				turn_second_tile(tile);
+				turnSecondTile(tile);
 			},
 			canTurn: function(tile) { 
 				return tile !== current_up; 
@@ -44,7 +44,7 @@ var memory = function(settings){
 		won: ""
 	};
 
-	turn_second_tile = function(tile){
+	turnSecondTile = function(tile){
 		if (tile === current_up) return;
 		tile.faceUp();
 		if (tile.matches(current_up)) {
@@ -97,8 +97,8 @@ var memory = function(settings){
 		img.setAttribute("src", src);
 		img.setAttribute("class", "front");
 		img.matches = function(other){
-			var other_src = other.getAttribute("src");
-			return src === other_src;
+			var otherSrc = other.getAttribute("src");
+			return src === otherSrc;
 		};
 		return img;
 	};
