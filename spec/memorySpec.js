@@ -21,10 +21,10 @@ describe("AddCallCount decorator", function(){
 	});
 	
 	it("records arguments provided to a call", function(){
-		var c = addCallCount(['x', 'y'], function(){});
+		var c = addCallCount(["x", "y"], function(){});
 		c(10, 20);
 		expect(c.calls.length).toBe(1);
-		expect(c.calls[0]).toEqual({'x': 10, 'y': 20});
+		expect(c.calls[0]).toEqual({"x": 10, "y": 20});
 		expect(c.calls[0].x).toBe(10);
 		expect(c.calls[0].y).toBe(20);
 	});
@@ -34,7 +34,7 @@ describe("The Memory game ", function(){
 	beforeEach(function() {
 		var stateMachine;
 		this.element = {
-			appendChild: addCallCount(['child'],
+			appendChild: addCallCount(["child"],
 				function(child){})
 		};
 		var tiles = [];
@@ -55,7 +55,7 @@ describe("The Memory game ", function(){
 					faceDown: addCallCount([], function(){
 						newTile.facedUp = false;
 					}),
-					matches: addCallCount(['tile'], function(tile){
+					matches: addCallCount(["tile"], function(tile){
 						return newTile.matchTile === tile;
 					}),
 					addEventListener: addEventListener
@@ -76,9 +76,9 @@ describe("The Memory game ", function(){
 			images:["x","y","z"], 
 			createTile: this.tileFactory.createTile, 
 			shuffle: this.shuffle,
-			setTimeout: addCallCount(['f', 'time'], function(f,time){
+			setTimeout: addCallCount(["f", "time"], function(f,time){
 			}),
-			stats: addCallCount(['stats'], function(stats){})
+			stats: addCallCount(["stats"], function(stats){})
 		};
 		this.game = memory(this.settings);
 	});
