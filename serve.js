@@ -1,9 +1,9 @@
 #!/usr/bin/node
-var http = require("http"),
-    url = require("url"),
-    path = require("path"),
-    fs = require("fs")
-    port = process.argv[2] || 8080;
+var http = require("http");
+var url = require("url");
+var path = require("path");
+var fs = require("fs");
+var port = process.argv[2] || 8080;
 
 var contentTypeFromExtension = function(file){
 	if (/\.js$/.test(file)){
@@ -30,7 +30,9 @@ http.createServer(function(request, response) {
       return;
     }
  
-    if (fs.statSync(filename).isDirectory()) filename += '/index.html';
+    if (fs.statSync(filename).isDirectory()) {
+        filename += "/index.html";
+    }
  
     fs.readFile(filename, "binary", function(err, file) {
       if(err) {        
